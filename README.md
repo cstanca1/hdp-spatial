@@ -4,5 +4,5 @@ SQL Server
 SQOOP
 #### execute the following command on SQOOP
 ```
-sqoop import-all-tables --connect "jdbc:sqlserver://SERVERNAME;database=TABLENAME" --username username --password password --hive-import --create-hive-table
+sqoop import-all-tables --connect "jdbc:sqlserver://SERVERNAME;database=TABLENAME" --username username --password password --hive-import --create-hive-table -m 1
 ```
