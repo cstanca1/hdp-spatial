@@ -18,9 +18,10 @@ The objective of this POC is to demonstrate spatial queries capabilities with HD
 
 ## Steps
 
-### Restore from backup a sample database to SQL Server 2012 instance dedicated for this exercise
+### SQL Server Database
+Restore from backup a sample database to SQL Server 2012 instance dedicated for this exercise.
 
-Note: We preferred to restore from the backup to avoid differences. An alternative is to execute the DDL script (DDL.sql) and load the data from pipe delimited files.
+We preferred to restore from the backup to avoid differences. An alternative is to execute the DDL script (MSSQL-DDL.sql) and load the data from pipe delimited files, which we did not upload to Github, but we have on a separate FTP site.
 
 ### Migrate SQL Server objects (tables and views) metadata and data to Hive via Sqoop
 
@@ -94,24 +95,14 @@ show create table tablename
 
 8 tables and 1 view are needed for these two queries
 
-policy_exposure
+- policy_exposure
+- policy_loss_analysis
+- portfolio
+- portfolio_analysis
+- lu_country
+- lu_geocode_level
+- site_exposure
+- site_loss_analysis
+- vw_pointaccumulation_sp_results
 
-policy_loss_analysis
-
-portfolio
-
-portfolio_analysis
-
-lu_country
-
-lu_geocode_level
-
-site_exposure
-
-site_loss_analysis
-
-vw_pointaccumulation_sp_results
-
-The first four tables were successfully migrated to Hive via Sqoop. They match structure and data.
-
-The following four tables and the view were not successfully migrated. @TODO: investigate cause and fix before anything else.
+The first four tables were successfully migrated to Hive via Sqoop. They match structure and data. The following four tables and the view were not successfully migrated. @TODO: investigate cause and fix before anything else.
