@@ -92,16 +92,22 @@ show create table tablename
 
 @TODO: compare records for tables needed for the two selected queries (see query09.sql, query10.sql)
 
-8 tables and 1 view is needed for these two queries
+8 tables and 1 view are needed for these two queries
 
 policy_exposure
+
 policy_loss_analysis
+
 portfolio
+
 portfolio_analysis
 
 lu_country
+
 lu_geocode_level
+
 site_exposure
+
 site_loss_analysis
 
 vw_pointaccumulation_sp_results
