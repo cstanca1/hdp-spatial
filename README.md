@@ -18,11 +18,11 @@ The objective of this POC is to demonstrate spatial queries capabilities with HD
 
 ## Steps
 
-1. Restore from backup a sample database to SQL Server 2012 instance dedicated for this exercise
+### Restore from backup a sample database to SQL Server 2012 instance dedicated for this exercise
 
 Note: We preferred to restore from the backup to avoid differences. An alternative is to execute the DDL script (DDL.sql) and load the data from pipe delimited files.
 
-2. Migrate SQL Server objects (tables and views) metadata and data to Hive via Sqoop
+### Migrate SQL Server objects (tables and views) metadata and data to Hive via Sqoop
 
 Before getting started with Sqoop, download sql jdbc driver from Microsoft https://www.microsoft.com/en-us/download/details.aspx?id=11774 (sql jdbc is at least 4.2 as that has support for Java 8), then copy it to the cluster node with sqoop client:
 
@@ -37,13 +37,13 @@ cd sqljdbc*/enu
 cp sqljdbc42.jar /usr/hdp/current/sqoop-client/lib
 ```
 
-3. Execute sqoop import from SQL Server to Hive:
+### Execute sqoop import from SQL Server to Hive:
 
 ```
 sqoop import-all-tables --connect "jdbc:sqlserver://SERVERNAME;database=TABLENAME" --username username --password password --hive-import --create-hive-table -m 1
 ```
 
-4. Validate that tables are created and populated with data
+### Validate that tables are created and populated with data
 
 Before doing that, assuming login with anonymous user, create directory for /user/anonymous otherwise get permission denied on write.
 ```
@@ -53,8 +53,9 @@ sudo -u hdfs hdfs dfs -chown -R anonymous:hdfs /user/anonymous
 Login to beeline to confirm
 ```
 beeline
-
-
+```
+Then, connect to hive instance:
+```
 beeline> !connect jdbc:hive2://r02hn03:10000
 Connecting to jdbc:hive2://r02hn03:10000
 Enter username for jdbc:hive2://r02hn03:10000:
@@ -83,11 +84,11 @@ To quit beeline type:
 ```
 The above result indicates that 25 tables were created. Original tables and views in SQL Server were 177. @TODO: investigate the difference and causes.
 
-5. View the DDL created by SQOOP for the Hive tables
+###. View the DDL created by SQOOP for the Hive tables
 ```
 show create table tablename
 ```
-6. SQL Server and Hive Gap Analysis
+###. SQL Server and Hive Gap Analysis
 
 @TODO: compare records for tables needed for the two selected queries (see query09.sql, query10.sql)
 
@@ -108,4 +109,3 @@ vw_pointaccumulation_sp_results
 The first four tables were successfully migrated to Hive via Sqoop. They match structure and data.
 
 The following four tables and the view were not successfully migrated. @TODO: investigate cause and fix before anything else.
-
