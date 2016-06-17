@@ -93,7 +93,7 @@ show create table tablename
 
 @TODO: compare records for tables needed for the two selected queries (see query09.sql, query10.sql)
 
-8 tables and 1 view are needed for these two queries
+8 tables and 1 view are needed and were migrated to support execution of two queries (09, 10)
 
 - policy_exposure
 - policy_loss_analysis
@@ -105,4 +105,7 @@ show create table tablename
 - site_loss_analysis
 - vw_pointaccumulation_sp_results
 
-The first four tables were successfully migrated to Hive via Sqoop. They match structure and data. The following four tables and the view were not successfully migrated. @TODO: investigate cause and fix before anything else.
+Several of the tables include a "geometry" type "shape" field. That was migrated as binary to Hive, but we suspect that this data type may not be appropriate for converting to a geometry type.
+
+ESRI spatial framework for hadoop and ESRI geometry API were built to account for Hive and Hadoop versions specific to HDP 2.4.2. 
+@TODO: need to figure out how to use them. We had a few unsuccessful attempts. The Hive binary format does not seem appropriate. We will explore other options.
