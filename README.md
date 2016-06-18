@@ -109,3 +109,17 @@ Several of the tables include a "geometry" type "shape" field. That was migrated
 
 ESRI spatial framework for hadoop and ESRI geometry API were built to account for Hive and Hadoop versions specific to HDP 2.4.2. 
 @TODO: need to figure out how to use them. We had a few unsuccessful attempts. The Hive binary format does not seem appropriate. We will explore other options.
+
+============
+HIVE
+============
+once table exists in Hive and contains shape data types mapped to Hive's binary type, it equates to "geometry" type and can be consumed with ST_AsGeoJson UDF
+
+```
+add jar hdfs://namenode:8020/tmp/esri/esri-geometry-api.jar;
+add jar hdfs://namenode:8020/tmp/esri/spatial-sdk-hive-1.1.1-SNAPSHOT.jar;
+add jar hdfs://namenode:8020/tmp/esri/spatial-sdk-json-1.1.1-SNAPSHOT.jar;
+use default;
+create temporary function st_asgeojson as 'com.esri.hadoop.hive.ST_AsGeoJson';
+select st_asgeojson(shape) from tablename;
+```
