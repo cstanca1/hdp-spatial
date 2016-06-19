@@ -116,10 +116,46 @@ HIVE
 once table exists in Hive and contains shape data types mapped to Hive's binary type, it equates to "geometry" type and can be consumed with ST_AsGeoJson UDF
 
 ```
+hive>
 add jar hdfs://namenode:8020/tmp/esri/esri-geometry-api.jar;
 add jar hdfs://namenode:8020/tmp/esri/spatial-sdk-hive-1.1.1-SNAPSHOT.jar;
 add jar hdfs://namenode:8020/tmp/esri/spatial-sdk-json-1.1.1-SNAPSHOT.jar;
 use default;
+
 create temporary function st_asgeojson as 'com.esri.hadoop.hive.ST_AsGeoJson';
 select st_asgeojson(shape) from tablename;
 ```
+```
+{"type":"Point","coordinates":[],"crs":{"type":"name","properties":{"name":"ESRI:1111111111"}}}
+```
+
+```
+-- create a new function that accepts geojson from the previous step and converts to ST_GeometryType class
+create temporary function st_geomfromgeojson as 'com.esri.hadoop.hive.ST_GeomFromGeoJson';
+select st_geomfromgeojson(st_asgeojson(shape)) from tablename;
+```
+```
+-- st_geomfromgeojson returns a binary object hence the output is garbled
+OK
+{����4ۧc��4q�yk
+```
+
+```
+-- now that we have a legit ESRI geometry object we can print out it's contents
+create temporary function st_astext as 'com.esri.hadoop.hive.ST_AsText';
+select st_astext(st_geomfromgeojson(st_asgeojson(shape))) from tablename;
+```
+```
+POINT (1.000000000000000e+111 1.111111111111111111e+297)
+POINT EMPTY
+```
+```
+-- another useful UDF function is st_geometrytype that returns the type of the object
+create temporary function st_geometrytype as 'com.esri.hadoop.hive.ST_GeometryType';
+select st_geometrytype(st_geomfromgeojson(st_asgeojson(shape))) from tablename;
+```
+```
+OK
+ST_POINT
+```
+
